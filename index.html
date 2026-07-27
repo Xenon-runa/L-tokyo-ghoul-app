@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>喰種判別 | 東京喰種 設定判別ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== ヘッダー ===================== -->
+<header class="app-header">
+  <div class="app-header__glow"></div>
+  <h1 class="app-header__title"><span class="kanji">喰種判別</span><span class="sub">TOKYO GHOUL SETTING TOOL</span></h1>
+  <button id="btn-reset" class="app-header__reset" title="入力をリセット" aria-label="入力をリセット">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M17.65 6.35A8 8 0 1 0 19.5 13h-2.1a6 6 0 1 1-1.4-6.15L13 10h7V3l-2.35 3.35Z"/></svg>
+  </button>
+</header>
+
+<!-- ===================== メインコンテンツ ===================== -->
+<main class="app-main">
+
+  <!-- ---------- 基本情報 ---------- -->
+  <section class="tab-panel" id="tab-basic" data-tab="basic">
+    <div class="card">
+      <h2 class="card__title">基本情報</h2>
+      <div class="field-grid">
+        <label class="field"><span>店舗名</span><input type="text" id="in-shop" placeholder="例：〇〇会館"></label>
+        <label class="field"><span>日付</span><input type="date" id="in-date"></label>
+        <label class="field"><span>台番号</span><input type="text" inputmode="numeric" id="in-machineNo" placeholder="例：123"></label>
+        <label class="field"><span>通常ゲーム数</span><input type="number" inputmode="numeric" id="in-normalGames" placeholder="0"></label>
+        <label class="field"><span>ATゲーム数</span><input type="number" inputmode="numeric" id="in-atGames" placeholder="0"></label>
+        <label class="field"><span>総ゲーム数</span><input type="number" inputmode="numeric" id="in-totalGames" placeholder="0"></label>
+        <label class="field"><span>現在ゲーム数</span><input type="number" inputmode="numeric" id="in-currentGames" placeholder="0"></label>
+        <label class="field"><span>投資枚数</span><input type="number" inputmode="numeric" id="in-invest" placeholder="0"></label>
+        <label class="field"><span>回収枚数</span><input type="number" inputmode="numeric" id="in-payout" placeholder="0"></label>
+      </div>
+      <div class="diff-display">
+        <span>差枚</span>
+        <strong id="out-diffMai">0</strong>
+        <span class="unit">枚</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 設定差入力 ---------- -->
+  <section class="tab-panel" id="tab-diff" data-tab="diff" hidden>
+    <div id="counter-list"><!-- JSで動的生成 --></div>
+  </section>
+
+  <!-- ---------- 示唆入力 ---------- -->
+  <section class="tab-panel" id="tab-suggest" data-tab="suggest" hidden>
+    <div class="card">
+      <h2 class="card__title">カード示唆</h2>
+      <div class="chip-group" data-suggest-group="card">
+        <button class="chip" data-value="デフォルト">デフォルト</button>
+        <button class="chip" data-value="奇数">奇数</button>
+        <button class="chip" data-value="偶数">偶数</button>
+        <button class="chip" data-value="高設定">高設定</button>
+        <button class="chip" data-value="456">456</button>
+        <button class="chip" data-value="6">6</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card__title">終了画面</h2>
+      <div class="chip-group" data-suggest-group="ending">
+        <button class="chip" data-value="デフォルト">デフォルト</button>
+        <button class="chip" data-value="奇数">奇数</button>
+        <button class="chip" data-value="偶数">偶数</button>
+        <button class="chip" data-value="高設定">高設定</button>
+        <button class="chip" data-value="456">456</button>
+        <button class="chip" data-value="6">6</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card__title">トロフィー</h2>
+      <div class="chip-group" data-suggest-group="trophy">
+        <button class="chip" data-value="銅">銅</button>
+        <button class="chip" data-value="銀">銀</button>
+        <button class="chip" data-value="金">金</button>
+        <button class="chip" data-value="キリン">キリン</button>
+        <button class="chip" data-value="虹">虹</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 設定判別 ---------- -->
+  <section class="tab-panel" id="tab-judge" data-tab="judge" hidden>
+    <div class="card">
+      <h2 class="card__title">設定判別グラフ</h2>
+      <div class="chart-wrap"><canvas id="chart-probability" height="220"></canvas></div>
+      <div class="prob-summary" id="prob-summary"><!-- JSで動的生成 --></div>
+    </div>
+
+    <div class="card">
+      <h2 class="card__title">項目別 実測比較</h2>
+      <div class="field">
+        <select id="select-chart-item"></select>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-item" height="220"></canvas></div>
+    </div>
+
+    <div class="card">
+      <button id="btn-copy-chatgpt" class="btn-primary">ChatGPTへ解析依頼</button>
+      <button id="btn-save-history" class="btn-secondary">この内容を履歴に保存</button>
+    </div>
+  </section>
+
+  <!-- ---------- 履歴 ---------- -->
+  <section class="tab-panel" id="tab-history" data-tab="history" hidden>
+    <div class="card">
+      <h2 class="card__title">履歴</h2>
+      <div class="history-actions">
+        <button id="btn-export-csv" class="btn-secondary btn-sm">CSVエクスポート</button>
+        <label class="btn-secondary btn-sm file-label">
+          CSVインポート
+          <input type="file" id="in-import-csv" accept=".csv" hidden>
+        </label>
+      </div>
+      <ul id="history-list" class="history-list"><!-- JSで動的生成 --></ul>
+      <p class="empty-hint" id="history-empty" hidden>保存された履歴はまだありません。</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== ボトムナビ(片手操作用) ===================== -->
+<nav class="bottom-nav">
+  <button class="nav-btn is-active" data-tab="basic">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M4 4h16v2H4zM4 11h16v2H4zM4 18h10v2H4z"/></svg>
+    <span>基本</span>
+  </button>
+  <button class="nav-btn" data-tab="diff">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M11 5h2v14h-2zM5 11h14v2H5z"/></svg>
+    <span>設定差</span>
+  </button>
+  <button class="nav-btn" data-tab="suggest">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2 2 7l10 5 10-5-10-5Zm0 7L2 14l10 5 10-5-10-5Z"/></svg>
+    <span>示唆</span>
+  </button>
+  <button class="nav-btn" data-tab="judge">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M4 20V10h4v10H4Zm6 0V4h4v16h-4Zm6 0v-7h4v7h-4Z"/></svg>
+    <span>判別</span>
+  </button>
+  <button class="nav-btn" data-tab="history">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M13 3a9 9 0 1 0 8.94 10h-2.02A7 7 0 1 1 13 5v4l5-4-5-4v4Z"/></svg>
+    <span>履歴</span>
+  </button>
+</nav>
+
+<!-- ===================== トースト ===================== -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- Chart.js (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="calc.js"></script>
+<script src="storage.js"></script>
+<script src="copy.js"></script>
+<script src="graph.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

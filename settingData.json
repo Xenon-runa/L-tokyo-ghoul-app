@@ -1,0 +1,70 @@
+{
+  "_readme": "各配列は [設定1, 設定2, 設定3, 設定4, 設定5, 設定6] の順。値は「1/○○」の分母(母数)。値が小さいほど当選しやすい=高設定に期待。'_source'が'web'のものは公開解析サイトの数値を参考に入力(2026年1月時点の東京グール解析情報がベース)。'_source'が'estimate'のものは公開情報が乏しいため暫定値。実戦データが集まってきたら数値を調整してください。",
+
+  "reminiscence": {
+    "label": "レミニセンス(CZ)",
+    "trialBase": "totalGames",
+    "values": [300.5, 295.1, 287.6, 276.7, 262.7, 251.2],
+    "_source": "web"
+  },
+  "ohagui": {
+    "label": "大喰いのリゼ(上位CZ)",
+    "trialBase": "totalGames",
+    "values": [2079.1, 1906.5, 1722.8, 1478.9, 1226.6, 1074.9],
+    "_source": "web"
+  },
+  "episode": {
+    "label": "エピソードボーナス",
+    "trialBase": "totalGames",
+    "values": [6620.2, 5879.7, 5114.5, 4062.5, 3166.7, 2639.5],
+    "_source": "web"
+  },
+  "atChokugeki": {
+    "label": "AT直撃",
+    "trialBase": "totalGames",
+    "values": [28460.6, 24453.5, 18093.0, 12019.5, 8615.4, 7036.8],
+    "_source": "web"
+  },
+  "kakuganNormal": {
+    "label": "通常時 赫眼リプレイ(下段リプレイ)",
+    "trialBase": "normalGames",
+    "values": [1260.3, 1213.6, 1170.3, 1129.9, 1092.3, 1024.0],
+    "_source": "web"
+  },
+  "kakuganAT": {
+    "label": "AT中 赫眼リプレイ",
+    "trialBase": "atGames",
+    "values": [980, 930, 880, 820, 760, 700],
+    "_source": "estimate"
+  },
+  "seishin10": {
+    "label": "精神世界 10G",
+    "trialBase": "totalGames",
+    "values": [1800, 1750, 1700, 1600, 1500, 1400],
+    "_source": "estimate"
+  },
+  "seishin20": {
+    "label": "精神世界 20G",
+    "trialBase": "totalGames",
+    "values": [2600, 2500, 2350, 2150, 1950, 1800],
+    "_source": "estimate"
+  },
+  "seishin30": {
+    "label": "精神世界 30G",
+    "trialBase": "totalGames",
+    "values": [4200, 4000, 3700, 3300, 2900, 2600],
+    "_source": "estimate"
+  },
+  "seishin40": {
+    "label": "精神世界 40G",
+    "trialBase": "totalGames",
+    "values": [7000, 6600, 6000, 5200, 4400, 3800],
+    "_source": "estimate"
+  },
+  "seishin50": {
+    "label": "精神世界 50G",
+    "trialBase": "totalGames",
+    "values": [12000, 11200, 10000, 8400, 6800, 5600],
+    "_source": "estimate"
+  }
+}
